@@ -11,8 +11,7 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind Configuration -->
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -31,9 +30,25 @@
         }
     </script>
     
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     <!-- Custom Map of Existing JS Classes to Tailwind via @apply -->
     <style type="text/tailwindcss">
         @layer base {
+            :root {
+                --accent-success: #22c55e;
+                --accent-warning: #eab308;
+                --accent-danger: #ef4444;
+                --text-muted: #94a3b8;
+                --font-heading: 'Instrument Serif', serif;
+                --brand-primary: currentColor;
+                --bg-main: rgba(0,0,0,0.05);
+            }
+            .dark {
+                --bg-main: rgba(255,255,255,0.05);
+                --text-muted: #64748b;
+            }
             body { @apply bg-light dark:bg-dark text-slate-900 dark:text-slate-100 font-sans transition-all duration-300 antialiased selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black; }
             h1, h2, h3, h4, .font-serif { @apply font-serif tracking-tight font-normal; }
         }
