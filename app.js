@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const landingPage = document.getElementById('landingPage');
     const appContainer = document.getElementById('appContainer');
 
-    if(state.goal && state.reports.length > 0 && state.apiKey) {
+    if(state.goal && state.reports.length > 0) {
         // User already played before, skip to app
         landingPage.classList.add('hidden');
         appContainer.classList.remove('hidden');
@@ -59,14 +59,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 state.apiKey = keyInput.value.trim();
                 saveState();
             }
+            launchApp();
+        });
 
+        document.getElementById('defaultModeBtn').addEventListener('click', () => {
+            state.apiKey = ''; // Ensure fallback mode
+            saveState();
+            launchApp();
+        });
+
+        function launchApp() {
             landingPage.style.opacity = '0';
             setTimeout(() => {
                 landingPage.classList.add('hidden');
                 appContainer.classList.remove('hidden');
                 runChatFlow();
             }, 400);
-        });
+        }
     }
 
     // --- Navigation ---
