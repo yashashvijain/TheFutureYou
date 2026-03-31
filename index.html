@@ -4,11 +4,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Future You</title>
-    <!-- Premium Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Premium Boutique-Tech Fonts: Instrument Serif for headers, Inter for UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#020617', // Deep slate
+                        light: '#f8fafc' // Soft off-white
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Instrument Serif', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Map of Existing JS Classes to Tailwind via @apply -->
+    <style type="text/tailwindcss">
+        @layer base {
+            body { @apply bg-light dark:bg-dark text-slate-900 dark:text-slate-100 font-sans transition-all duration-300 antialiased selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black; }
+            h1, h2, h3, h4, .font-serif { @apply font-serif tracking-tight font-normal; }
+        }
+        @layer components {
+            .hidden { display: none !important; }
+            
+            /* -- Landing Page -- */
+            .landing-page { @apply fixed inset-0 flex flex-col justify-center items-center bg-light dark:bg-dark z-[1000] px-6 transition-opacity duration-700; }
+            .landing-content { @apply max-w-2xl w-full flex flex-col items-start border-l-2 border-gray-200 dark:border-slate-800 pl-8; }
+            .landing-title { @apply text-6xl md:text-8xl mb-6 text-black dark:text-white leading-none; }
+            .landing-subtitle { @apply text-lg text-gray-500 dark:text-slate-400 mb-10 font-sans font-light leading-relaxed max-w-lg; }
+            .landing-btn { @apply bg-black dark:bg-white text-white dark:text-black px-8 py-4 text-sm font-semibold tracking-wide rounded-none transition-all duration-300 ease-in-out hover:opacity-80 flex items-center gap-3 shadow-lg shadow-black/10 dark:shadow-none; }
+
+            /* -- App Layout -- */
+            .app-container { @apply flex flex-col min-h-screen w-full transition-opacity duration-700; }
+            
+            /* Minimalist Header Strip */
+            .app-nav { @apply flex justify-between items-center px-8 py-5 border-b border-gray-200 dark:border-slate-800/60 bg-white/50 dark:bg-slate-900/10 backdrop-blur-md sticky top-0 z-50; }
+            .logo { @apply text-2xl font-serif text-black dark:text-white flex items-center gap-3; }
+            .nav-links { @apply flex items-center gap-8 hidden md:flex; }
+            
+            /* Nav Buttons */
+            .nav-btn { @apply text-xs uppercase font-semibold tracking-[0.15em] text-gray-400 transition-all duration-300 pb-1 border-b-2 border-transparent hover:text-black dark:hover:text-white focus:outline-none bg-transparent cursor-pointer; }
+            .nav-btn.active { @apply text-black dark:text-white border-black dark:border-white; }
+            .icon-btn { @apply text-lg text-gray-400 hover:text-black dark:hover:text-white transition-all duration-300 bg-transparent cursor-pointer border-none; }
+
+            /* -- Main Area -- */
+            .app-main { @apply flex-1 flex justify-center w-full px-6 py-12 md:py-16 overflow-y-auto; }
+            .tab-content { @apply w-full max-w-2xl hidden flex-col transition-all duration-500; }
+            .tab-content.active { @apply flex; }
+
+            /* -- Profile/ID Card as a Data-Dense Strip -- */
+            .profile-layout { @apply w-full flex flex-col gap-10; }
+            .id-card { @apply flex flex-col border-b border-gray-200 dark:border-slate-800 pb-8; }
+            .widget-header { @apply flex justify-between items-center text-[10px] text-gray-400 dark:text-slate-500 font-semibold uppercase tracking-widest mb-4; }
+            .widget-title { @apply flex items-center gap-2; }
+            
+            .id-status-row { @apply flex flex-col md:flex-row justify-between items-start md:items-center gap-8 w-full; }
+            .id-meta h2 { @apply text-5xl text-black dark:text-white; }
+            .id-title { @apply text-xs text-black dark:text-white font-semibold uppercase tracking-widest mt-2 border-l-2 border-black dark:border-white pl-2; }
+            
+            /* Progress Bar */
+            .level-tracker { @apply w-full md:w-64 shrink-0; }
+            .level-info { @apply flex justify-between text-[10px] text-gray-500 uppercase font-semibold tracking-widest mb-2; }
+            .level-progress-bar { @apply w-full h-[1px] bg-gray-200 dark:bg-slate-800 overflow-hidden; }
+            .level-progress-fill { @apply h-full bg-black dark:bg-white transition-all duration-1000 ease-out; }
+            
+            /* Small, Clear Labels Data Grid */
+            .stats-grid { @apply grid grid-cols-2 gap-px bg-gray-200 dark:bg-slate-800 border border-gray-200 dark:border-slate-800 rounded-sm overflow-hidden mt-6; }
+            .stat-box { @apply bg-light dark:bg-dark p-4 flex flex-col justify-center items-center md:items-start; }
+            .stat-val { @apply text-2xl font-serif text-black dark:text-white mb-1; }
+            .stat-lbl { @apply text-[9px] text-gray-500 uppercase font-semibold tracking-widest; }
+
+            /* Badges */
+            .badges-card { @apply flex flex-col; }
+            .badges-grid { @apply grid grid-cols-2 md:grid-cols-4 gap-3; }
+            .badge-item { @apply border border-gray-200 dark:border-slate-800 p-4 flex flex-col items-center justify-center opacity-40 transition-all duration-300 rounded-sm hover:-translate-y-1 hover:opacity-70; }
+            .badge-item.active { @apply opacity-100 border-black dark:border-white text-black dark:text-white shadow-sm; }
+            .badge-icon { @apply text-2xl mb-3 grayscale; }
+            .badge-item.active .badge-icon { @apply grayscale-0; }
+            .badge-name { @apply text-[9px] text-center font-semibold uppercase tracking-widest text-gray-500; }
+            .badge-item.active .badge-name { @apply text-black dark:text-white; }
+
+            /* History Log */
+            .history-card { @apply flex flex-col mt-4; }
+            .history-list { @apply flex flex-col border border-gray-200 dark:border-slate-800 rounded-sm divide-y divide-gray-200 dark:divide-slate-800; }
+            .history-item { @apply p-4 flex justify-between items-center transition-colors duration-300 hover:bg-gray-50 dark:hover:bg-slate-900/50; }
+            .hi-date { @apply text-xs font-semibold text-gray-600 dark:text-gray-400 mb-0.5; }
+            .hi-score { @apply text-lg font-serif; }
+            .empty-state { @apply p-6 text-sm text-gray-500 divide-y-0 text-center font-mono; }
+
+            /* -- Test Interface -- */
+            .test-icon { @apply text-4xl mb-6 text-black dark:text-white opacity-80; }
+            .test-card { @apply flex flex-col w-full; }
+            .test-intro h2 { @apply text-4xl mb-4 text-black dark:text-white; }
+            .test-intro p { @apply text-base text-gray-500 dark:text-slate-400 leading-relaxed max-w-lg mb-10; }
+            
+            /* AI.js Injected Classes Mapping */
+            .q-box { @apply mb-10; }
+            .q-target { @apply text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-6 border-b border-gray-200 dark:border-slate-800 pb-3 flex items-center gap-2; }
+            .q-target::before { content: ""; @apply block w-1.5 h-1.5 bg-gray-400 rounded-full; }
+            .q-title { @apply text-2xl text-black dark:text-white font-serif leading-relaxed mb-6; }
+            .q-options { @apply flex flex-col gap-3; }
+            .q-option { @apply border border-gray-200 dark:border-slate-800 p-5 rounded-sm flex items-center gap-4 cursor-pointer transition-all duration-300 hover:border-gray-400 dark:hover:border-gray-500; }
+            .q-option.selected { @apply border-black dark:border-white bg-gray-50 dark:bg-slate-900/50 shadow-sm; }
+            .q-option span { @apply text-sm text-gray-700 dark:text-gray-300 transition-colors duration-300; }
+            .q-option.selected span { @apply font-medium text-black dark:text-white; }
+            
+            /* Button & Interaction Components */
+            .primary-btn { @apply bg-black dark:bg-white text-white dark:text-black px-6 py-3 text-sm font-semibold tracking-wide rounded-sm transition-all duration-300 hover:opacity-80; }
+            .btn-sm { @apply px-5 py-2 text-[10px] font-bold uppercase tracking-widest border border-gray-300 dark:border-slate-700 rounded-sm hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white transition-all duration-300 bg-transparent cursor-pointer; text-transform: uppercase; }
+            
+            .mono-text { @apply font-mono text-xs tracking-widest uppercase; }
+            .term-radio-grid { @apply flex flex-col gap-3 mb-8; }
+            .term-radio { @apply border border-gray-200 dark:border-slate-800 p-4 rounded-sm flex items-center gap-3 cursor-pointer transition-all duration-300 text-sm font-mono text-gray-600 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-500; }
+            .term-radio.selected { @apply border-black dark:border-white text-black dark:text-white bg-gray-50 dark:bg-slate-900/50 shadow-sm; }
+            .term-radio input[type="radio"] { @apply hidden; }
+            .custom-answer-input { @apply bg-transparent border-b border-gray-300 dark:border-slate-600 outline-none flex-1 ml-2 px-2 py-1 font-sans text-sm text-black dark:text-white focus:border-black dark:focus:border-white transition-colors duration-300; }
+            .nav-controls { @apply flex justify-between border-t border-gray-200 dark:border-slate-800 pt-6; }
+            .log-container { @apply w-full bg-gray-50 dark:bg-slate-900/50 p-4 rounded-sm border border-gray-200 dark:border-slate-800; }
+            .log-item { @apply flex gap-3 text-sm font-mono items-start border-l-2 border-black dark:border-white pl-3 text-gray-600 dark:text-gray-400; }
+
+            /* Chat layout specific fixes */
+            .chat-container { @apply flex flex-col h-[75vh] w-full; }
+            .chat-history { @apply flex-1 overflow-y-auto pr-3 pb-4 scroll-smooth flex flex-col; }
+            .chat-history::-webkit-scrollbar { @apply w-1.5; }
+            .chat-history::-webkit-scrollbar-thumb { @apply bg-gray-300 dark:bg-slate-700 rounded-full; }
+        }
+    </style>
 </head>
 <body>
 
@@ -16,23 +150,38 @@
     <div id="landingPage" class="landing-page">
         <div class="landing-content">
             <h1 class="landing-title">The Future You.</h1>
-            <p class="landing-subtitle">Stop guessing your trajectory. Chat with your future self, align your daily habits, and turn your potential into reality.</p>
-            <button id="getStartedBtn" class="primary-btn landing-btn">Initiate Neural Link <i class="fa-solid fa-arrow-right"></i></button>
+            <p class="landing-subtitle">Stop guessing your trajectory. Log in to your neural link, align your daily mechanics, and architect your reality block by block.</p>
+            
+            <div class="w-full max-w-sm mb-8">
+                <label class="text-[10px] uppercase font-bold tracking-widest text-gray-400 mb-2 block">Neural Link Authentication</label>
+                <input type="password" id="apiKeyInput" class="w-full bg-transparent border-b border-gray-300 dark:border-slate-700 text-black dark:text-white font-sans text-sm outline-none py-2 transition-all duration-300 focus:border-black dark:focus:border-white placeholder-gray-300 dark:placeholder-slate-700" placeholder="Enter Gemini API Key...">
+                <p id="apiKeyError" class="text-xs text-red-500 mt-2 hidden">Invalid API Key or connection failed.</p>
+            </div>
+            
+            <button id="getStartedBtn" class="landing-btn">
+                Initiate Link <i class="fa-solid fa-arrow-right"></i>
+            </button>
         </div>
     </div>
 
     <!-- APP CONTAINER -->
     <div id="appContainer" class="app-container hidden">
+        
+        <!-- Header Strip -->
         <nav class="app-nav">
             <div class="logo">
-                <span class="logo-icon">✨</span> The Future You
+                <i class="fa-solid fa-terminal text-sm"></i> TheFutureYou
             </div>
+            
             <div class="nav-links">
-                <button class="nav-btn active" data-tab="chat"><i class="fa-regular fa-comment-dots"></i> Chat</button>
-                <button class="nav-btn" data-tab="test"><i class="fa-solid fa-compass"></i> Alignment</button>
-                <button class="nav-btn" data-tab="profile"><i class="fa-regular fa-id-card"></i> Profile Dashboard</button>
+                <button class="nav-btn active" data-tab="chat">Terminal</button>
+                <button class="nav-btn" data-tab="test">Alignment</button>
+                <button class="nav-btn" data-tab="profile">Data Core</button>
             </div>
-            <button id="themeToggle" class="icon-btn hidden"><i class="fa-solid fa-moon"></i></button>
+            
+            <button id="themeToggle" class="icon-btn" title="Toggle Theme">
+                <i class="fa-solid fa-circle-half-stroke"></i>
+            </button>
         </nav>
 
         <main class="app-main">
@@ -40,28 +189,28 @@
             <section id="chat" class="tab-content active">
                 <div class="chat-container">
                     <div class="chat-history" id="chatHistory">
-                        <!-- Messages will be injected by JS -->
+                        <!-- Messages injected by JS app.js -->
                     </div>
                     <div class="chat-input-area" id="chatInputArea">
-                        <!-- Interactive elements injected by JS -->
+                        <!-- Inputs injected by JS app.js -->
                     </div>
                 </div>
             </section>
 
             <!-- TEST SECTION -->
             <section id="test" class="tab-content">
-                <div class="card test-card">
+                <div class="test-card">
                     <div class="test-intro" id="testIntro">
-                        <div class="test-icon"><i class="fa-solid fa-brain"></i></div>
-                        <h2>The Alignment Test</h2>
-                        <p>Let's do a deep dive. I'll ask you a few questions to see if your current mindset and consistency align with what we want to achieve.</p>
-                        <button id="startTestBtn" class="primary-btn">Begin Analysis</button>
+                        <div class="test-icon"><i class="fa-solid fa-fingerprint"></i></div>
+                        <h2>Mindset Analysis</h2>
+                        <p>We need to verify structural integrity. Answer the sequence below to evaluate if your current protocols can sustain your designated trajectory.</p>
+                        <button id="startTestBtn" class="primary-btn">Begin Diagnostic</button>
                     </div>
-                    <div id="testArea" class="test-area hidden">
-                        <!-- Multiple choice questions injected here -->
+                    <div id="testArea" class="test-area hidden p-6 border border-gray-200 dark:border-slate-800 rounded-sm">
+                        <!-- Multiple choice injected by ai.js / app.js array -->
                     </div>
-                    <div id="testResult" class="test-result hidden">
-                        <!-- Results injected here -->
+                    <div id="testResult" class="test-result hidden w-full">
+                        <!-- Results injected by app.js -->
                     </div>
                 </div>
             </section>
@@ -70,23 +219,23 @@
             <section id="profile" class="tab-content">
                 <div class="profile-layout">
                     
-                    <!-- ID Dashboard Widget -->
-                    <div class="dashboard-widget id-card">
+                    <!-- Highly Data-Dense ID Strip -->
+                    <div class="id-card">
                         <div class="widget-header">
-                            <span class="widget-title"><i class="fa-solid fa-id-badge"></i> Future Self Status</span>
-                            <button id="resetProfileBtn" class="icon-btn" style="color:var(--accent-danger);" title="Reset Profile"><i class="fa-solid fa-power-off"></i></button>
+                            <span class="widget-title"><i class="fa-solid fa-database"></i> Identity Profile</span>
+                            <button id="resetProfileBtn" class="text-[10px] text-red-500 hover:text-red-700 transition-colors uppercase font-bold tracking-widest border border-red-500/20 px-3 py-1 rounded-[1px] bg-transparent"><i class="fa-solid fa-power-off"></i> Purge</button>
                         </div>
                         
                         <div class="id-status-row">
                             <div class="id-meta">
-                                <h2 id="idName">Future Self</h2>
-                                <p class="id-title" id="idGoal">Goal: Defining Path...</p>
+                                <h2 id="idName">Target Entity</h2>
+                                <p class="id-title" id="idGoal">Goal: Fetching...</p>
                             </div>
                             
                             <div class="level-tracker">
                                 <div class="level-info">
-                                    <span id="currentLevel">Lvl 1: Dreamer</span>
-                                    <span id="levelsLeft">9 lvls to mastry</span>
+                                    <span id="currentLevel">Lvl 1</span>
+                                    <span id="levelsLeft">9 to apex</span>
                                 </div>
                                 <div class="level-progress-bar"><div class="level-progress-fill" id="levelProgress"></div></div>
                             </div>
@@ -95,35 +244,38 @@
                         <div class="stats-grid">
                             <div class="stat-box">
                                 <div class="stat-val" id="streakDays">0</div>
-                                <div class="stat-lbl">Day Streak</div>
+                                <div class="stat-lbl">Uptime (Days)</div>
                             </div>
                             <div class="stat-box">
                                 <div class="stat-val" id="consistencyScore">0%</div>
-                                <div class="stat-lbl">Consistency</div>
+                                <div class="stat-lbl">System Consistency</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Badges -->
-                    <div class="dashboard-widget badges-card">
-                        <div class="widget-header"><span class="widget-title"><i class="fa-solid fa-award"></i> Achievements</span></div>
+                    <!-- Badges Grid -->
+                    <div class="badges-card">
+                        <div class="widget-header"><span class="widget-title"><i class="fa-solid fa-cube"></i> Milestones</span></div>
                         <div class="badges-grid" id="badgesGrid">
                             <!-- Badges injected by JS -->
                         </div>
                     </div>
 
-                    <!-- History -->
-                    <div class="dashboard-widget history-card">
-                        <div class="widget-header"><span class="widget-title"><i class="fa-solid fa-chart-line"></i> Analytics Archive</span></div>
+                    <!-- Analytics Archive -->
+                    <div class="history-card">
+                        <div class="widget-header"><span class="widget-title"><i class="fa-brands fa-buffer"></i> Archive Log</span></div>
                         <div class="history-list" id="historyList">
-                            <p class="empty-state" style="color:var(--text-secondary); font-size: 0.9rem;">No data logged.</p>
+                            <p class="empty-state">System Memory is currently blank.</p>
                         </div>
                     </div>
+                    
                 </div>
             </section>
         </main>
     </div> <!-- END APP CONTAINER -->
 
+    <!-- Load JS Logic -->
     <script src="app.js"></script>
+    <script src="ai.js"></script>
 </body>
 </html>

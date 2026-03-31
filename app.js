@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- State Management ---
     let state = {
         theme: 'light',
         goal: '',
@@ -9,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         level: 1,
         reports: [],
         consistencyScore: 0,
+        apiKey: '',
     };
 
     function saveState() { localStorage.setItem('fv_state', JSON.stringify(state)); }
@@ -28,10 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Theme ---
-    if(state.theme === 'dark') document.body.classList.add('dark-mode');
+    if(state.theme === 'dark') document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+
     document.getElementById('themeToggle').addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        state.theme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+        document.documentElement.classList.toggle('dark');
+        state.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
         saveState();
     });
 
@@ -39,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const landingPage = document.getElementById('landingPage');
     const appContainer = document.getElementById('appContainer');
 
-    if(state.goal && state.reports.length > 0) {
+    if(state.goal && state.reports.length > 0 && state.apiKey) {
         // User already played before, skip to app
         landingPage.classList.add('hidden');
         appContainer.classList.remove('hidden');
@@ -47,6 +49,17 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         // New user
         document.getElementById('getStartedBtn').addEventListener('click', () => {
+            const keyInput = document.getElementById('apiKeyInput');
+            if ((!state.apiKey || state.apiKey === '') && keyInput && keyInput.value.trim() === '') {
+                document.getElementById('apiKeyError').classList.remove('hidden');
+                document.getElementById('apiKeyError').textContent = 'Please enter a valid Gemini API Key.';
+                return;
+            }
+            if (keyInput && keyInput.value.trim() !== '') {
+                state.apiKey = keyInput.value.trim();
+                saveState();
+            }
+
             landingPage.style.opacity = '0';
             setTimeout(() => {
                 landingPage.classList.add('hidden');
@@ -77,11 +90,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function addMessage(sender, text) {
         const div = document.createElement('div');
-        div.className = `chat-msg msg-${sender}`;
-        const avatar = sender === 'ai' ? '<i class="fa-solid fa-bolt"></i>' : '<i class="fa-regular fa-user"></i>';
+        const name = sender === 'ai' ? 'SYSTEM' : 'YOU';
+        div.className = `py-6 border-b border-gray-200 dark:border-slate-800/60 transition-all duration-300 ease-in-out`;
         div.innerHTML = `
-            <div class="msg-avatar">${avatar}</div>
-            <div class="msg-bubble">${text}</div>
+            <div class="text-xs text-gray-400 dark:text-slate-500 font-semibold mb-2 uppercase tracking-widest">${name}</div>
+            <div class="text-black dark:text-white font-sans text-base leading-relaxed break-words">${text}</div>
         `;
         chatHistory.appendChild(div);
         chatHistory.scrollTop = chatHistory.scrollHeight;
@@ -91,9 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
         chatInputArea.innerHTML = '';
         if (mode === 'text') {
             chatInputArea.innerHTML = `
-                <div class="input-wrap">
-                    <input type="text" id="chatTxt" class="chat-input-txt" placeholder="${data.placeholder || 'Type here...'}">
-                    <button class="send-btn" id="chatSend"><i class="fa-solid fa-paper-plane"></i></button>
+                <div class="flex items-center gap-3 mt-4">
+                    <input type="text" id="chatTxt" class="flex-1 bg-transparent border-b border-gray-300 dark:border-slate-700 text-black dark:text-white font-sans text-base outline-none py-2 transition-all duration-300 ease-in-out focus:border-black dark:focus:border-white rounded-none placeholder-gray-400 dark:placeholder-slate-600" placeholder="${data.placeholder || 'Type here...'}">
+                    <button class="bg-black dark:bg-white text-white dark:text-black px-5 py-2 text-sm font-semibold capitalize tracking-wide rounded-sm transition-all duration-300 ease-in-out hover:opacity-80" id="chatSend"><i class="fa-solid fa-arrow-right"></i></button>
                 </div>
             `;
             const sendBtn = document.getElementById('chatSend');
@@ -104,11 +117,11 @@ document.addEventListener('DOMContentLoaded', () => {
             txt.addEventListener('keypress', (e) => { if(e.key === 'Enter') submit(); });
         } else if (mode === 'choice') {
             const wrap = document.createElement('div');
-            wrap.className = 'btn-group';
+            wrap.className = 'flex flex-wrap gap-3 mt-4';
             const opts = Array.isArray(data) ? data : data.options;
             opts.forEach(opt => {
                 const b = document.createElement('button');
-                b.className = 'choice-btn';
+                b.className = 'border border-gray-300 dark:border-slate-700 text-gray-700 dark:text-slate-300 bg-transparent px-5 py-2 text-sm font-medium rounded-sm transition-all duration-300 ease-in-out hover:border-black hover:text-black dark:hover:border-white dark:hover:text-white';
                 b.textContent = opt.label;
                 b.addEventListener('click', () => handleAnswer(opt.value, opt.label));
                 wrap.appendChild(b);
@@ -116,10 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
             chatInputArea.appendChild(wrap);
         } else if (mode === 'slider') {
             chatInputArea.innerHTML = `
-                <div class="slider-group">
-                    <div class="slider-labels"><span id="sldVal">${data.def}</span><span>${data.unit}</span></div>
-                    <input type="range" id="chatSld" class="chat-slider" min="${data.min}" max="${data.max}" value="${data.def}">
-                    <button class="primary-btn" id="chatSldBtn" style="width:100%; margin-top:15px;">Confirm</button>
+                <div class="w-full mt-6">
+                    <div class="flex justify-between text-xs text-gray-500 mb-4 font-mono uppercase tracking-widest"><span id="sldVal">${data.def}</span><span>${data.unit}</span></div>
+                    <input type="range" id="chatSld" class="w-full h-1 bg-gray-200 dark:bg-slate-800 rounded-none appearance-none outline-none cursor-pointer transition-all duration-300" min="${data.min}" max="${data.max}" value="${data.def}">
+                    <button class="w-full mt-6 bg-black dark:bg-white text-white dark:text-black py-3 text-sm font-bold uppercase tracking-widest rounded-sm transition-all duration-300 ease-in-out hover:opacity-80" id="chatSldBtn">Confirm Action</button>
                 </div>
             `;
             const sld = document.getElementById('chatSld');
@@ -211,25 +224,62 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(runChatFlow, 800);
     }
 
-    function calculateDailyOutcome() {
+    async function calculateDailyOutcome() {
         const { work, sleep, health, badHabits } = tempAnswers;
         let pScore = 50;
-        
-        // Logic
-        pScore += (work - 3) * 5; 
-        if(sleep >= 7 && sleep <= 9) pScore += 15; else pScore -= 20;
-        if(health === 100) pScore += 20; else if(health === 0) pScore -= 20;
-        if(badHabits) pScore -= 30; else pScore += 20;
-
-        pScore = Math.max(0, Math.min(100, Math.round(pScore)));
-        
         let msg = "";
-        if(pScore >= 80) msg = `🔥 **${pScore}% alignment!** I am so proud of us. If you keep this up, we are 100% going to achieve our goal of becoming a **${state.goal}**.`;
-        else if(pScore >= 50) msg = `👍 **${pScore}% alignment.** We did okay today, but we need to push harder. Average effort yields average results.`;
-        else msg = `⚠️ **${pScore}% alignment.** Please wake up! We are failing. The bad habits and lack of effort are destroying our future. Fix this tomorrow!`;
+
+        try {
+            const prompt = `You are the user's future self from 2030, an extremely successful ${state.goal || 'Elite Professional'}. 
+The user is reporting their daily habits:
+- Deep Work today: ${work} hours
+- Sleep last night: ${sleep} hours
+- Health metrics (0=Terrible, 50=Average, 100=Great): ${health}
+- Waste time on bad habits today?: ${badHabits ? 'Yes' : 'No'}
+
+Carefully evaluate these inputs contextually. Generate a JSON object with strictly these two fields:
+{
+  "score": <a number from 0 to 100 representing how well they executed today>,
+  "msg": "<a concise, impactful, boutique-tech styled message to the user analyzing their day. Be completely honest, harsh if they failed, encouraging if they succeeded. Max 3 sentences. use markdown formatting like **bold** if needed>"
+}
+Ensure output is pure JSON.`;
+
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${state.apiKey}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }],
+                    generationConfig: { temperature: 0.7 }
+                })
+            });
+            const data = await response.json();
+            
+            if(data.error) throw new Error(data.error.message);
+
+            const txt = data.candidates[0].content.parts[0].text;
+            const cleanTxt = txt.replace(/\`\`\`json/g, '').replace(/\`\`\`/g, '').trim();
+            const parsed = JSON.parse(cleanTxt);
+            pScore = parsed.score || 50;
+            msg = parsed.msg || "System parsed data successfully.";
+
+        } catch (err) {
+            console.error("Gemini API Error:", err);
+            // Logic Fallback
+            pScore += (work - 3) * 5; 
+            if(sleep >= 7 && sleep <= 9) pScore += 15; else pScore -= 20;
+            if(health === 100) pScore += 20; else if(health === 0) pScore -= 20;
+            if(badHabits) pScore -= 30; else pScore += 20;
+            pScore = Math.max(0, Math.min(100, Math.round(pScore)));
+            
+            if(pScore >= 80) msg = `🔥 **${pScore}% alignment!** I am so proud of us. If you keep this up, we are 100% going to achieve our goal.`;
+            else if(pScore >= 50) msg = `👍 **${pScore}% alignment.** We did okay today, but we need to push harder. Average effort yields average results.`;
+            else msg = `⚠️ **${pScore}% alignment.** Please wake up! We are failing. Fix this tomorrow!`;
+            
+            msg += " [API DOWN: FALLBACK INITIATED]";
+        }
 
         addMessage('ai', msg);
-        addMessage('ai', "I've logged this report in your ID profile. You can also take the **Deep Test** in the next tab to check our mindset mechanics.");
+        addMessage('ai', "I've logged this report in your Data Core. You can also take the **Alignment Diagnostic** to check our current protocols.");
         
         // Update state
         const today = new Date().toDateString();
@@ -252,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         saveState();
         
-        chatInputArea.innerHTML = `<button class="choice-btn" onclick="location.reload()">Reset Chat</button>`;
+        chatInputArea.innerHTML = `<button class="border border-gray-300 dark:border-slate-700 text-gray-700 dark:text-slate-300 w-full bg-transparent px-5 py-3 mt-4 text-sm font-bold uppercase tracking-widest rounded-sm transition-all duration-300 ease-in-out hover:border-black hover:text-black dark:hover:border-white dark:hover:text-white" onclick="location.reload()">Reset Chat</button>`;
     }
 
     // runChatFlow is now either called automatically (if returning user) or after clicking Get Started.
