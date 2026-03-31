@@ -209,5 +209,28 @@ body.dark-mode .landing-content { background: rgba(30, 41, 59, 0.6); }
 
 @media (max-width: 768px) {
     .profile-layout { grid-template-columns: 1fr; }
-    .chat-msg { max-width: 90%; }
+    .chat-msg { max-width: 95%; }
+    
+    /* Navigation Adjustments */
+    .app-nav { flex-direction: column; gap: 15px; padding: 15px; }
+    .nav-links { flex-wrap: wrap; justify-content: center; width: 100%; border-radius: 12px; gap: 5px; }
+    .nav-btn { font-size: 0.85rem; padding: 10px; width: 30%; justify-content: center; }
+    
+    /* Landing Page Adjustments */
+    .landing-content { padding: 40px 20px; }
+    .landing-title { font-size: 2.5rem; }
+    .landing-subtitle { font-size: 1.1rem; }
+    
+    /* Profile Adjustments */
+    .id-header { flex-direction: column; text-align: center; }
+    #resetProfileBtn { margin: 15px auto 0 !important; width: 100%; }
+}
+
+@media (max-width: 480px) {
+    .app-main { padding: 10px; }
+    .card { padding: 20px; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .input-wrap { flex-direction: column; }
+    .chat-input-txt { border-radius: 15px; }
+    .send-btn { width: 100%; border-radius: 15px; height: 45px; margin-top: 5px; }
 }
