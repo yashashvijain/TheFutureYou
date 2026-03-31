@@ -4,124 +4,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Future You</title>
-    <!-- Modern, Friendly Typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 </head>
-<body class="light-mode">
-    <div class="ambient-bg"></div>
+<body class="dark-mode">
+    <!-- Three.js Background -->
+    <canvas id="bg-canvas"></canvas>
 
     <!-- LANDING PAGE -->
     <div id="landingPage" class="landing-page">
-        <div class="landing-content">
-            <h1 class="landing-title">The Future You</h1>
+        <div class="landing-content" data-tilt>
+            <h1 class="landing-title">The Future You.</h1>
             <p class="landing-subtitle">Stop guessing your trajectory. Chat with your future self, align your daily habits, and turn your potential into reality.</p>
-            <button id="getStartedBtn" class="primary-btn landing-btn">Get Started <i class="fa-solid fa-arrow-right"></i></button>
+            <button id="getStartedBtn" class="primary-btn landing-btn">Initiate Neural Link <i class="fa-solid fa-arrow-right"></i></button>
         </div>
     </div>
 
     <!-- APP CONTAINER -->
     <div id="appContainer" class="app-container hidden">
         <nav class="app-nav">
-        <div class="logo">
-            <span class="logo-icon">✨</span> The Future You
-        </div>
-        <div class="nav-links">
-            <button class="nav-btn active" data-tab="chat"><i class="fa-regular fa-comment-dots"></i> Chat</button>
-            <button class="nav-btn" data-tab="test"><i class="fa-solid fa-compass"></i> Alignment Test</button>
-            <button class="nav-btn" data-tab="profile"><i class="fa-regular fa-id-card"></i> Your ID</button>
-        </div>
-        <button id="themeToggle" class="icon-btn"><i class="fa-solid fa-moon"></i></button>
-    </nav>
-
-    <main class="app-main">
-        <!-- CHAT SECTION -->
-        <section id="chat" class="tab-content active">
-            <div class="chat-container">
-                <div class="chat-history" id="chatHistory">
-                    <!-- Messages will be injected by JS -->
-                </div>
-                <div class="chat-input-area" id="chatInputArea">
-                    <!-- Interactive elements injected by JS -->
-                </div>
+            <div class="logo">
+                <span class="logo-icon">✨</span> The Future You
             </div>
-        </section>
-
-        <!-- TEST SECTION -->
-        <section id="test" class="tab-content">
-            <div class="card test-card">
-                <div class="test-intro" id="testIntro">
-                    <div class="test-icon"><i class="fa-solid fa-brain"></i></div>
-                    <h2>The Alignment Test</h2>
-                    <p>Let's do a deep dive. I'll ask you a few questions to see if your current mindset and consistency align with what we want to achieve.</p>
-                    <button id="startTestBtn" class="primary-btn">Start Test</button>
-                </div>
-                <div id="testArea" class="test-area hidden">
-                    <!-- Multiple choice questions injected here -->
-                </div>
-                <div id="testResult" class="test-result hidden">
-                    <!-- Results injected here -->
-                </div>
+            <div class="nav-links">
+                <button class="nav-btn active" data-tab="chat" data-tilt><i class="fa-regular fa-comment-dots"></i> Chat</button>
+                <button class="nav-btn" data-tab="test" data-tilt><i class="fa-solid fa-compass"></i> Alignment Test</button>
+                <button class="nav-btn" data-tab="profile" data-tilt><i class="fa-regular fa-id-card"></i> Your ID</button>
             </div>
-        </section>
+            <button id="themeToggle" class="icon-btn" data-tilt><i class="fa-solid fa-moon"></i></button>
+        </nav>
 
-        <!-- PROFILE / ID SECTION -->
-        <section id="profile" class="tab-content">
-            <div class="profile-layout">
-                <!-- ID Card -->
-                <div class="card id-card">
-                    <div class="id-header">
-                        <div class="avatar" id="avatarIcon"><i class="fa-solid fa-user-astronaut"></i></div>
-                        <div class="id-info">
-                            <h2 id="idName">Future Self</h2>
-                            <p class="id-title" id="idGoal">Goal: Defining Path...</p>
-                        </div>
-                        <button id="resetProfileBtn" class="icon-btn" style="margin-left:auto; color:var(--accent-danger);" title="Erase Profile Data"><i class="fa-solid fa-trash-can"></i></button>
+        <main class="app-main">
+            <!-- CHAT SECTION -->
+            <section id="chat" class="tab-content active">
+                <div class="chat-container">
+                    <div class="chat-history" id="chatHistory">
+                        <!-- Messages will be injected by JS -->
                     </div>
-                    
-                    <div class="level-section">
-                        <div class="level-header">
-                            <span class="level-badge" id="currentLevel">Level 1: Dreamer</span>
-                            <span class="level-left" id="levelsLeft">9 levels to mastery</span>
-                        </div>
-                        <div class="progress-bar"><div class="progress-fill" id="levelProgress"></div></div>
+                    <div class="chat-input-area card" id="chatInputArea" data-tilt data-tilt-max="2" data-tilt-speed="1000">
+                        <!-- Interactive elements injected by JS -->
                     </div>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-box">
-                            <i class="fa-solid fa-fire glow-orange"></i>
-                            <div class="stat-val" id="streakDays">0</div>
-                            <div class="stat-lbl">Day Streak</div>
+                </div>
+            </section>
+
+            <!-- TEST SECTION -->
+            <section id="test" class="tab-content">
+                <div class="card test-card" data-tilt data-tilt-max="3">
+                    <div class="test-intro" id="testIntro">
+                        <div class="test-icon"><i class="fa-solid fa-brain"></i></div>
+                        <h2>The Alignment Test</h2>
+                        <p>Let's do a deep dive. I'll ask you a few questions to see if your current mindset and consistency align with what we want to achieve.</p>
+                        <button id="startTestBtn" class="primary-btn">Begin Analysis</button>
+                    </div>
+                    <div id="testArea" class="test-area hidden">
+                        <!-- Multiple choice questions injected here -->
+                    </div>
+                    <div id="testResult" class="test-result hidden">
+                        <!-- Results injected here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROFILE / ID SECTION -->
+            <section id="profile" class="tab-content">
+                <div class="profile-layout">
+                    <!-- ID Card -->
+                    <div class="card id-card" data-tilt data-tilt-max="2" data-tilt-glare="true" data-tilt-max-glare="0.1">
+                        <div class="id-header">
+                            <div class="avatar" id="avatarIcon"><i class="fa-solid fa-bolt"></i></div>
+                            <div class="id-info">
+                                <h2 id="idName">Future Self</h2>
+                                <p class="id-title" id="idGoal">Goal: Defining Path...</p>
+                            </div>
+                            <button id="resetProfileBtn" class="icon-btn" style="margin-left:auto; color:var(--accent-danger);" title="Erase Profile Data"><i class="fa-solid fa-power-off"></i></button>
                         </div>
-                        <div class="stat-box">
-                            <i class="fa-solid fa-bullseye glow-blue"></i>
-                            <div class="stat-val" id="consistencyScore">0%</div>
-                            <div class="stat-lbl">Consistency</div>
+                        
+                        <div class="level-section">
+                            <div class="level-header">
+                                <span class="level-badge" id="currentLevel">Level 1: Dreamer</span>
+                                <span class="level-left" id="levelsLeft">9 levels to mastery</span>
+                            </div>
+                            <div class="progress-bar"><div class="progress-fill" id="levelProgress"></div></div>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <i class="fa-solid fa-fire glow-orange"></i>
+                                <div class="stat-val" id="streakDays">0</div>
+                                <div class="stat-lbl">Day Streak</div>
+                            </div>
+                            <div class="stat-box">
+                                <i class="fa-solid fa-bullseye glow-blue"></i>
+                                <div class="stat-val" id="consistencyScore">0%</div>
+                                <div class="stat-lbl">Consistency</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Badges -->
+                    <div class="card badges-card" data-tilt data-tilt-max="2">
+                        <h3><i class="fa-solid fa-award"></i> Achievement Badges</h3>
+                        <div class="badges-grid" id="badgesGrid">
+                            <!-- Badges injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- History -->
+                    <div class="card history-card" data-tilt data-tilt-max="2">
+                        <h3><i class="fa-solid fa-chart-line"></i> Progress Archive</h3>
+                        <div class="history-list" id="historyList">
+                            <p class="empty-state">No past records found. Start chatting or take a test!</p>
                         </div>
                     </div>
                 </div>
-
-                <!-- Badges -->
-                <div class="card badges-card">
-                    <h3><i class="fa-solid fa-award"></i> Achievement Badges</h3>
-                    <div class="badges-grid" id="badgesGrid">
-                        <!-- Badges injected by JS -->
-                    </div>
-                </div>
-
-                <!-- History -->
-                <div class="card history-card">
-                    <h3><i class="fa-solid fa-chart-line"></i> Progress History</h3>
-                    <div class="history-list" id="historyList">
-                        <p class="empty-state">No past records found. Start chatting or take a test!</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
+        </main>
     </div> <!-- END APP CONTAINER -->
 
+    <script src="three-bg.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
