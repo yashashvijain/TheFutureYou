@@ -85,14 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         chatHistory.appendChild(div);
         chatHistory.scrollTop = chatHistory.scrollHeight;
-
-        // GSAP Staggered Reveal Animation
-        if (typeof gsap !== 'undefined') {
-            gsap.fromTo(div, 
-                { opacity: 0, y: 20, scale: 0.95 },
-                { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power3.out" }
-            );
-        }
     }
 
     function setInputMode(mode, data) {
@@ -318,19 +310,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         });
-
-        // Re-calculate VanillaTilt elements if they exist
-        if(typeof VanillaTilt !== 'undefined') {
-            VanillaTilt.init(document.querySelectorAll('.badge-item'), { max: 10, speed: 400 });
-        }
-
-        // GSAP Profile Card Stagger
-        if (typeof gsap !== 'undefined') {
-            gsap.fromTo('#profile .card', 
-                { opacity: 0, y: 40 },
-                { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power3.out" }
-            );
-        }
     }
 
     // --- Deep Test Engine ---
