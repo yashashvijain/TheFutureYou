@@ -57,7 +57,7 @@
             
             /* -- Landing Page -- */
             .landing-page { @apply fixed inset-0 flex flex-col justify-center items-center bg-light dark:bg-dark z-[1000] px-6 transition-opacity duration-700; }
-            .landing-content { @apply max-w-2xl w-full flex flex-col items-start border-l-2 border-gray-200 dark:border-slate-800 pl-8; }
+            .landing-content { @apply max-w-4xl w-full flex flex-col items-start border-l-2 border-gray-200 dark:border-slate-800 pl-8; }
             .landing-title { @apply text-6xl md:text-8xl mb-6 text-black dark:text-white leading-none; }
             .landing-subtitle { @apply text-lg text-gray-500 dark:text-slate-400 mb-10 font-sans font-light leading-relaxed max-w-lg; }
             .landing-btn { @apply bg-black dark:bg-white text-white dark:text-black px-8 py-4 text-sm font-semibold tracking-wide rounded-none transition-all duration-300 ease-in-out hover:opacity-80 flex items-center gap-3 shadow-lg shadow-black/10 dark:shadow-none; }
@@ -167,19 +167,28 @@
             <h1 class="landing-title">The Future You.</h1>
             <p class="landing-subtitle">Stop guessing your trajectory. Log in to your neural link, align your daily mechanics, and architect your reality block by block.</p>
             
-            <div class="w-full max-w-sm mb-8">
-                <label class="text-[10px] uppercase font-bold tracking-widest text-gray-400 mb-2 block">Neural Link Authentication</label>
-                <input type="password" id="apiKeyInput" class="w-full bg-transparent border-b border-gray-300 dark:border-slate-700 text-black dark:text-white font-sans text-sm outline-none py-2 transition-all duration-300 focus:border-black dark:focus:border-white placeholder-gray-300 dark:placeholder-slate-700" placeholder="Enter Gemini API Key...">
-                <p id="apiKeyError" class="text-xs text-red-500 mt-2 hidden">Invalid API Key or connection failed.</p>
-            </div>
-            
-            <div class="flex flex-col gap-4">
-                <button id="getStartedBtn" class="landing-btn">
-                    Initiate Link <i class="fa-solid fa-arrow-right"></i>
-                </button>
-                <button id="defaultModeBtn" class="text-[10px] text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white uppercase font-bold tracking-widest transition-all duration-300 text-left w-fit">
-                    Try Default Core (No API Key)
-                </button>
+            <div class="flex flex-col md:flex-row gap-6 w-full mt-4">
+                
+                <!-- Default Option -->
+                <div class="flex-1 border border-gray-200 dark:border-slate-800 p-6 rounded-sm bg-gray-50/50 dark:bg-slate-900/20 backdrop-blur-sm">
+                    <h3 class="text-sm text-black dark:text-white font-bold uppercase tracking-widest mb-3 border-b border-gray-200 dark:border-slate-800 pb-2"><i class="fa-solid fa-bolt"></i> Default Engine</h3>
+                    <p class="text-xs text-gray-500 mb-8 leading-relaxed">Fast, local calculation. Uses the standard, mathematically precise trajectory simulator without dynamic AI text generation.</p>
+                    <button id="defaultModeBtn" class="bg-black dark:bg-white text-white dark:text-black px-6 py-3 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 hover:opacity-80 w-full text-center">
+                        Initiate Basic Link
+                    </button>
+                </div>
+                
+                <!-- Custom API Option -->
+                <div class="flex-1 border border-black dark:border-white p-6 rounded-sm bg-white dark:bg-slate-900 shadow-xl shadow-black/5 dark:shadow-none">
+                    <h3 class="text-sm text-black dark:text-white font-bold uppercase tracking-widest mb-3 border-b border-gray-200 dark:border-slate-800 pb-2"><i class="fa-solid fa-microchip"></i> Deep AI Engine</h3>
+                    <p class="text-xs text-gray-500 mb-6 leading-relaxed">Provide your personal Gemini API key to unlock the 2030 neural link contextual evaluations.</p>
+                    <input type="password" id="apiKeyInput" class="w-full bg-transparent border-b border-gray-300 dark:border-slate-700 text-black dark:text-white font-sans text-xs outline-none py-2 mb-2 transition-all duration-300 focus:border-black dark:focus:border-white placeholder-gray-400" placeholder="Enter Gemini API Key...">
+                    <p id="apiKeyError" class="text-[10px] text-red-500 mb-4 hidden font-bold">Valid API Key required.</p>
+                    <button id="getStartedBtn" class="border border-black dark:border-white text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black px-6 py-3 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 w-full text-center mt-2">
+                        Connect Neural Link
+                    </button>
+                </div>
+                
             </div>
         </div>
     </div>
